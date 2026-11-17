@@ -47,15 +47,18 @@ struct PomeradoHierarchyHandler: HTTPHandler {
 
         do {
             let snapshot = try XCUIApplication(bundleIdentifier: body.appId).snapshot()
+            let springboard = body.appId == Self.springboardBundleId
+                ? snapshot
+                : try XCUIApplication(bundleIdentifier: Self.springboardBundleId).snapshot()
+            let foreground = try Self.foregroundBundleId()
             var walk = Walk(maxDepth: maxDepth)
             let root = walk.element(snapshot, level: 1)
-            let alerts = try springboardAlerts()
             return PomeradoResponse.json([
                 "root": root,
                 "depth": walk.depth,
                 "truncated": walk.truncated || walk.mayBeCut(byXCTestMaxDepth: Self.xctestSnapshotMaxDepth()),
-                "foregroundBundleId": Self.foregroundBundleId() ?? NSNull(),
-                "springboardAlerts": alerts,
+                "foregroundBundleId": foreground,
+                "springboardAlerts": Self.alerts(in: springboard),
             ])
         } catch {
             NSLog("[Pomerado] hierarchy snapshot for \(body.appId) failed: \(error)")
@@ -104,31 +107,49 @@ struct PomeradoHierarchyHandler: HTTPHandler {
         }
     }
 
-    private func springboardAlerts() throws -> [[String: Any]] {
-        let springboard = XCUIApplication(bundleIdentifier: Self.springboardBundleId)
-        return try springboard.alerts.allElementsBoundByIndex.map { alert in
-            let snapshot = try alert.snapshot()
-            return [
-                "frame": Self.frame(snapshot.frame),
-                "title": snapshot.label,
-                "buttons": Self.buttons(in: snapshot).map { ["label": $0.label, "frame": Self.frame($0.frame)] },
+    /// SpringBoard alerts, taken from a full (throwing) SpringBoard snapshot rather than the
+    /// non-throwing `.alerts` query, which yields 0 elements when it fails.
+    private static func alerts(in springboard: XCUIElementSnapshot) -> [[String: Any]] {
+        descendants(of: springboard, where: { $0.elementType == .alert }, intoMatches: false).map { alert in
+            [
+                "frame": frame(alert.frame),
+                "title": alert.label,
+                "buttons": descendants(of: alert, where: { $0.elementType == .button }, intoMatches: true)
+                    .map { ["label": $0.label, "frame": frame($0.frame)] },
             ]
         }
     }
 
-    private static func buttons(in snapshot: XCUIElementSnapshot) -> [XCUIElementSnapshot] {
+    private static func descendants(
+        of snapshot: XCUIElementSnapshot,
+        where matches: (XCUIElementSnapshot) -> Bool,
+        intoMatches: Bool
+    ) -> [XCUIElementSnapshot] {
         snapshot.children.flatMap { child -> [XCUIElementSnapshot] in
-            (child.elementType == .button ? [child] : []) + buttons(in: child)
+            let isMatch = matches(child)
+            let below = isMatch && !intoMatches ? [] : descendants(of: child, where: matches, intoMatches: intoMatches)
+            return (isMatch ? [child] : []) + below
         }
     }
 
-    /// The foreground app as reported by `activeAppsInfo()`: a non-SpringBoard app in
-    /// `.runningForeground` wins; SpringBoard only when it is the sole foreground entry.
-    private static func foregroundBundleId() -> String? {
-        let foreground = XCUIApplication.activeAppsInfo()
-            .compactMap { $0["bundleId"] as? String }
-            .filter { $0 != "unknowBundleId" && XCUIApplication(bundleIdentifier: $0).state == .runningForeground }
-        return foreground.first { $0 != springboardBundleId } ?? foreground.first
+    private struct ForegroundUnknown: LocalizedError {
+        let errorDescription: String?
+    }
+
+    /// The foreground app from the AX active-application list (`activeAppsInfo()`), without
+    /// per-app `.state` queries (those record an XCTest issue and report a wrong state on failure).
+    /// A non-SpringBoard entry wins; SpringBoard only when it is the sole entry. An empty list or
+    /// an unresolved bundle id means "could not tell" and throws.
+    private static func foregroundBundleId() throws -> String {
+        let ids = XCUIApplication.activeAppsInfo().map { $0["bundleId"] as? String }
+        guard !ids.isEmpty else {
+            throw ForegroundUnknown(errorDescription: "activeAppsInfo returned no applications")
+        }
+        let resolved = ids.compactMap { $0 }.filter { $0 != "unknowBundleId" }
+        guard resolved.count == ids.count else {
+            throw ForegroundUnknown(errorDescription: "activeAppsInfo could not resolve every bundle id")
+        }
+        return resolved.first { $0 != springboardBundleId } ?? resolved[0]
     }
 
     /// XCTest's own snapshot `maxDepth` (private `defaultParameters`; INT_MAX unless something swizzled it).
@@ -144,7 +165,9 @@ struct PomeradoHierarchyHandler: HTTPHandler {
         }
     }
 
+    /// Non-finite components (CGRect.null / infinite) become 0: JSONSerialization cannot encode them.
     nonisolated fileprivate static func frame(_ rect: CGRect) -> [String: Double] {
-        ["x": Double(rect.origin.x), "y": Double(rect.origin.y), "width": Double(rect.size.width), "height": Double(rect.size.height)]
+        let finite = { (v: CGFloat) -> Double in v.isFinite ? Double(v) : 0 }
+        return ["x": finite(rect.origin.x), "y": finite(rect.origin.y), "width": finite(rect.size.width), "height": finite(rect.size.height)]
     }
 }

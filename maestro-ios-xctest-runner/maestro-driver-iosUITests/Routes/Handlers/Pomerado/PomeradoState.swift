@@ -48,7 +48,9 @@ enum PomeradoState {
 /// JSON helpers for Pomerado routes. `JSONSerialization` is used so that nil fields encode as explicit `null`.
 enum PomeradoResponse {
     static func json(_ object: [String: Any], status: HTTPStatusCode = .ok) -> HTTPResponse {
-        guard let body = try? JSONSerialization.data(withJSONObject: object, options: [.sortedKeys]) else {
+        // isValidJSONObject first: data(withJSONObject:) raises (not throws) on NaN/infinite numbers.
+        guard JSONSerialization.isValidJSONObject(object),
+              let body = try? JSONSerialization.data(withJSONObject: object, options: [.sortedKeys]) else {
             return HTTPResponse(statusCode: .internalServerError, headers: [.contentType: "application/json"], body: Data(#"{"code":"encoding_failed"}"#.utf8))
         }
         return HTTPResponse(statusCode: status, headers: [.contentType: "application/json"], body: body)
