@@ -38,6 +38,10 @@ struct XCTestHTTPServer {
             await server.appendRoute(route.toHTTPRoute(), to: handler)
         }
         
+        // Pomerado routes: strict, POST JSON under /pomerado/.
+        await server.appendRoute("POST /pomerado/status", to: PomeradoStatusHandler())
+        await server.appendRoute("POST /pomerado/hierarchy", to: await MainActor.run { PomeradoHierarchyHandler() })
+
         try await server.run()
     }
 }

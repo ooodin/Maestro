@@ -114,6 +114,9 @@
 		C2DB03C0028C821C6F580B2C /* XCAXClient_iOS+FBSnapshotReqParams.m in Sources */ = {isa = PBXBuildFile; fileRef = 526111792DE5E8E5007C356B /* XCAXClient_iOS+FBSnapshotReqParams.m */; };
 		D2244FD4EDCE31D1BAFD0549 /* SnapshotParametersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69198CA2D2E1AAFBD06FEB38 /* SnapshotParametersTests.swift */; };
 		F328D3E62A2A98E7000546D3 /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F328D3E52A2A98E7000546D3 /* StringExtensions.swift */; };
+		B0ADE0010000000000000002 /* PomeradoState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0ADE0010000000000000001 /* PomeradoState.swift */; };
+		B0ADE0020000000000000002 /* PomeradoStatusHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0ADE0020000000000000001 /* PomeradoStatusHandler.swift */; };
+		B0ADE0030000000000000002 /* PomeradoHierarchyHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0ADE0030000000000000001 /* PomeradoHierarchyHandler.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -366,6 +369,9 @@
 		BBBB00212DF24A0000000021 /* MaestroDriverLibTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MaestroDriverLibTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		EF8504E3A6C0E75E273B4538 /* maestro-driver-iosTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "maestro-driver-iosTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F328D3E52A2A98E7000546D3 /* StringExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
+		B0ADE0010000000000000001 /* PomeradoState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomeradoState.swift; sourceTree = "<group>"; };
+		B0ADE0020000000000000001 /* PomeradoStatusHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomeradoStatusHandler.swift; sourceTree = "<group>"; };
+		B0ADE0030000000000000001 /* PomeradoHierarchyHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomeradoHierarchyHandler.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -695,9 +701,20 @@
 			path = Routes;
 			sourceTree = "<group>";
 		};
+		B0ADE0000000000000000003 /* Pomerado */ = {
+			isa = PBXGroup;
+			children = (
+				B0ADE0010000000000000001 /* PomeradoState.swift */,
+				B0ADE0020000000000000001 /* PomeradoStatusHandler.swift */,
+				B0ADE0030000000000000001 /* PomeradoHierarchyHandler.swift */,
+			);
+			path = Pomerado;
+			sourceTree = "<group>";
+		};
 		943A9082293F5CA700C85136 /* Handlers */ = {
 			isa = PBXGroup;
 			children = (
+				B0ADE0000000000000000003 /* Pomerado */,
 				521C1F112D86CE8A0024EE42 /* TerminateAppHandler.swift */,
 				32A9C73B2D7A62AF00545435 /* LaunchAppHandler.swift */,
 				610D58F82A45B5DA00B4BBEB /* ViewHierarchyHandler.swift */,
@@ -1009,6 +1026,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B0ADE0010000000000000002 /* PomeradoState.swift in Sources */,
+				B0ADE0020000000000000002 /* PomeradoStatusHandler.swift in Sources */,
+				B0ADE0030000000000000002 /* PomeradoHierarchyHandler.swift in Sources */,
 				610D58F92A45B5DA00B4BBEB /* ViewHierarchyHandler.swift in Sources */,
 				52F0B1B32B3C26DF00C6471A /* KeyboardHandlerRequest.swift in Sources */,
 				612DE4122984114B003C2BE0 /* RunnerDaemonProxy.swift in Sources */,
@@ -1204,7 +1224,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1258,7 +1278,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -1283,13 +1303,13 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "dev.mobile.maestro-driver-ios";
+				PRODUCT_BUNDLE_IDENTIFIER = "dev.pomerado.xctest-driver";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -1312,13 +1332,13 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "dev.mobile.maestro-driver-ios";
+				PRODUCT_BUNDLE_IDENTIFIER = "dev.pomerado.xctest-driver";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -1341,7 +1361,7 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "dev.mobile.maestro-driver-iosUITests";
+				PRODUCT_BUNDLE_IDENTIFIER = "dev.pomerado.xctest-driverUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "maestro-driver-iosUITests/Categories/maestro-driver-iosUITests-Bridging-Header.h";
@@ -1367,7 +1387,7 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "dev.mobile.maestro-driver-iosUITests";
+				PRODUCT_BUNDLE_IDENTIFIER = "dev.pomerado.xctest-driverUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "maestro-driver-iosUITests/Categories/maestro-driver-iosUITests-Bridging-Header.h";
@@ -1391,7 +1411,7 @@
 					"$(SRCROOT)/maestro-driver-iosUITests/PrivateHeaders/XCTest",
 				);
 				INFOPLIST_FILE = "maestro-driver-iosTests/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1422,7 +1442,7 @@
 				INFOPLIST_FILE = MaestroDriverLib/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1453,7 +1473,7 @@
 				INFOPLIST_FILE = MaestroDriverLib/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1475,7 +1495,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1497,7 +1517,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1526,7 +1546,7 @@
 					"$(SRCROOT)/maestro-driver-iosUITests/PrivateHeaders/XCTest",
 				);
 				INFOPLIST_FILE = "maestro-driver-iosTests/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
