@@ -25,7 +25,7 @@ import XCTest
 /// instead of a partial fallback tree.
 @MainActor
 struct PomeradoHierarchyHandler: HTTPHandler {
-    static let springboardBundleId = "com.apple.springboard"
+    static let springboardBundleId = PomeradoSystem.springboardBundleId
     static let defaultMaxDepth = 60
 
     private struct Request: Decodable {
@@ -49,8 +49,8 @@ struct PomeradoHierarchyHandler: HTTPHandler {
             let snapshot = try XCUIApplication(bundleIdentifier: body.appId).snapshot()
             let springboard = body.appId == Self.springboardBundleId
                 ? snapshot
-                : try XCUIApplication(bundleIdentifier: Self.springboardBundleId).snapshot()
-            let foreground = try Self.foregroundBundleId()
+                : try PomeradoSystem.springboardSnapshot()
+            let foreground = try PomeradoSystem.foregroundBundleId()
             var walk = Walk(maxDepth: maxDepth)
             let root = walk.element(snapshot, level: 1)
             return PomeradoResponse.json([
@@ -67,6 +67,7 @@ struct PomeradoHierarchyHandler: HTTPHandler {
     }
 
     /// Converts a snapshot into the Element contract, stopping at `maxDepth` levels (root is level 1).
+    @MainActor
     private struct Walk {
         let maxDepth: Int
         private(set) var depth = 0
@@ -95,79 +96,30 @@ struct PomeradoHierarchyHandler: HTTPHandler {
                 "elementType": Int(snapshot.elementType.rawValue),
                 "identifier": snapshot.identifier,
                 "label": snapshot.label,
-                "value": PomeradoHierarchyHandler.stringValue(snapshot.value) ?? NSNull(),
+                "value": PomeradoResponse.stringValue(snapshot.value) ?? NSNull(),
                 "title": snapshot.title,
                 "placeholderValue": snapshot.placeholderValue ?? NSNull(),
                 "enabled": snapshot.isEnabled,
                 "selected": snapshot.isSelected,
-                "hasFocus": snapshot.hasFocus,
-                "frame": PomeradoHierarchyHandler.frame(snapshot.frame),
+                "hasFocus": PomeradoSystem.hasFocus(snapshot),
+                "frame": PomeradoResponse.frame(snapshot.frame),
                 "children": children,
             ]
         }
     }
 
-    /// SpringBoard alerts, taken from a full (throwing) SpringBoard snapshot rather than the
-    /// non-throwing `.alerts` query, which yields 0 elements when it fails.
     private static func alerts(in springboard: XCUIElementSnapshot) -> [[String: Any]] {
-        descendants(of: springboard, where: { $0.elementType == .alert }, intoMatches: false).map { alert in
+        PomeradoSystem.alerts(in: springboard).map { alert in
             [
-                "frame": frame(alert.frame),
-                "title": alert.label,
-                "buttons": descendants(of: alert, where: { $0.elementType == .button }, intoMatches: true)
-                    .map { ["label": $0.label, "frame": frame($0.frame)] },
+                "frame": PomeradoResponse.frame(alert.frame),
+                "title": alert.title,
+                "buttons": alert.buttons.map { ["label": $0.label, "frame": PomeradoResponse.frame($0.frame)] },
             ]
         }
-    }
-
-    private static func descendants(
-        of snapshot: XCUIElementSnapshot,
-        where matches: (XCUIElementSnapshot) -> Bool,
-        intoMatches: Bool
-    ) -> [XCUIElementSnapshot] {
-        snapshot.children.flatMap { child -> [XCUIElementSnapshot] in
-            let isMatch = matches(child)
-            let below = isMatch && !intoMatches ? [] : descendants(of: child, where: matches, intoMatches: intoMatches)
-            return (isMatch ? [child] : []) + below
-        }
-    }
-
-    private struct ForegroundUnknown: LocalizedError {
-        let errorDescription: String?
-    }
-
-    /// The foreground app from the AX active-application list (`activeAppsInfo()`), without
-    /// per-app `.state` queries (those record an XCTest issue and report a wrong state on failure).
-    /// A non-SpringBoard entry wins; SpringBoard only when it is the sole entry. An empty list or
-    /// an unresolved bundle id means "could not tell" and throws.
-    private static func foregroundBundleId() throws -> String {
-        let ids = XCUIApplication.activeAppsInfo().map { $0["bundleId"] as? String }
-        guard !ids.isEmpty else {
-            throw ForegroundUnknown(errorDescription: "activeAppsInfo returned no applications")
-        }
-        let resolved = ids.compactMap { $0 }.filter { $0 != "unknowBundleId" }
-        guard resolved.count == ids.count else {
-            throw ForegroundUnknown(errorDescription: "activeAppsInfo could not resolve every bundle id")
-        }
-        return resolved.first { $0 != springboardBundleId } ?? resolved[0]
     }
 
     /// XCTest's own snapshot `maxDepth` (private `defaultParameters`; INT_MAX unless something swizzled it).
     private static func xctestSnapshotMaxDepth() -> Int? {
         (AXClientProxy.sharedClient().defaultParameters()["maxDepth"] as? NSNumber)?.intValue
-    }
-
-    nonisolated fileprivate static func stringValue(_ value: Any?) -> String? {
-        switch value {
-        case let string as String: return string
-        case let number as NSNumber: return number.stringValue
-        default: return nil
-        }
-    }
-
-    /// Non-finite components (CGRect.null / infinite) become 0: JSONSerialization cannot encode them.
-    nonisolated fileprivate static func frame(_ rect: CGRect) -> [String: Double] {
-        let finite = { (v: CGFloat) -> Double in v.isFinite ? Double(v) : 0 }
-        return ["x": finite(rect.origin.x), "y": finite(rect.origin.y), "width": finite(rect.size.width), "height": finite(rect.size.height)]
     }
 }

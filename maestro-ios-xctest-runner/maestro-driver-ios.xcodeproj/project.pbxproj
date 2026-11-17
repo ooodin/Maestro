@@ -117,6 +117,12 @@
 		B0ADE0010000000000000002 /* PomeradoState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0ADE0010000000000000001 /* PomeradoState.swift */; };
 		B0ADE0020000000000000002 /* PomeradoStatusHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0ADE0020000000000000001 /* PomeradoStatusHandler.swift */; };
 		B0ADE0030000000000000002 /* PomeradoHierarchyHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0ADE0030000000000000001 /* PomeradoHierarchyHandler.swift */; };
+		B0ADE0040000000000000002 /* PomeradoGuard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0ADE0040000000000000001 /* PomeradoGuard.swift */; };
+		B0ADE0050000000000000002 /* PomeradoTouchHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0ADE0050000000000000001 /* PomeradoTouchHandler.swift */; };
+		B0ADE0060000000000000002 /* PomeradoInputHandlers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0ADE0060000000000000001 /* PomeradoInputHandlers.swift */; };
+		B0ADE0070000000000000002 /* PomeradoClearFieldHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0ADE0070000000000000001 /* PomeradoClearFieldHandler.swift */; };
+		B0ADE0080000000000000002 /* PomeradoAdjustHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0ADE0080000000000000001 /* PomeradoAdjustHandler.swift */; };
+		B0ADE0090000000000000002 /* PomeradoPinchHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0ADE0090000000000000001 /* PomeradoPinchHandler.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -372,6 +378,12 @@
 		B0ADE0010000000000000001 /* PomeradoState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomeradoState.swift; sourceTree = "<group>"; };
 		B0ADE0020000000000000001 /* PomeradoStatusHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomeradoStatusHandler.swift; sourceTree = "<group>"; };
 		B0ADE0030000000000000001 /* PomeradoHierarchyHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomeradoHierarchyHandler.swift; sourceTree = "<group>"; };
+		B0ADE0040000000000000001 /* PomeradoGuard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomeradoGuard.swift; sourceTree = "<group>"; };
+		B0ADE0050000000000000001 /* PomeradoTouchHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomeradoTouchHandler.swift; sourceTree = "<group>"; };
+		B0ADE0060000000000000001 /* PomeradoInputHandlers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomeradoInputHandlers.swift; sourceTree = "<group>"; };
+		B0ADE0070000000000000001 /* PomeradoClearFieldHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomeradoClearFieldHandler.swift; sourceTree = "<group>"; };
+		B0ADE0080000000000000001 /* PomeradoAdjustHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomeradoAdjustHandler.swift; sourceTree = "<group>"; };
+		B0ADE0090000000000000001 /* PomeradoPinchHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomeradoPinchHandler.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -707,6 +719,12 @@
 				B0ADE0010000000000000001 /* PomeradoState.swift */,
 				B0ADE0020000000000000001 /* PomeradoStatusHandler.swift */,
 				B0ADE0030000000000000001 /* PomeradoHierarchyHandler.swift */,
+				B0ADE0040000000000000001 /* PomeradoGuard.swift */,
+				B0ADE0050000000000000001 /* PomeradoTouchHandler.swift */,
+				B0ADE0060000000000000001 /* PomeradoInputHandlers.swift */,
+				B0ADE0070000000000000001 /* PomeradoClearFieldHandler.swift */,
+				B0ADE0080000000000000001 /* PomeradoAdjustHandler.swift */,
+				B0ADE0090000000000000001 /* PomeradoPinchHandler.swift */,
 			);
 			path = Pomerado;
 			sourceTree = "<group>";
@@ -1029,6 +1047,12 @@
 				B0ADE0010000000000000002 /* PomeradoState.swift in Sources */,
 				B0ADE0020000000000000002 /* PomeradoStatusHandler.swift in Sources */,
 				B0ADE0030000000000000002 /* PomeradoHierarchyHandler.swift in Sources */,
+				B0ADE0040000000000000002 /* PomeradoGuard.swift in Sources */,
+				B0ADE0050000000000000002 /* PomeradoTouchHandler.swift in Sources */,
+				B0ADE0060000000000000002 /* PomeradoInputHandlers.swift in Sources */,
+				B0ADE0070000000000000002 /* PomeradoClearFieldHandler.swift in Sources */,
+				B0ADE0080000000000000002 /* PomeradoAdjustHandler.swift in Sources */,
+				B0ADE0090000000000000002 /* PomeradoPinchHandler.swift in Sources */,
 				610D58F92A45B5DA00B4BBEB /* ViewHierarchyHandler.swift in Sources */,
 				52F0B1B32B3C26DF00C6471A /* KeyboardHandlerRequest.swift in Sources */,
 				612DE4122984114B003C2BE0 /* RunnerDaemonProxy.swift in Sources */,

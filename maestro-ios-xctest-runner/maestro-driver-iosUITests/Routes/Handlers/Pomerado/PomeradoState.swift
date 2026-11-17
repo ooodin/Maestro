@@ -65,4 +65,20 @@ enum PomeradoResponse {
     static func invalidRequest(_ message: String) -> HTTPResponse {
         error("invalid_request", status: .unprocessableContent, message: message)
     }
+
+    /// An accessibility value as the contract's `string|null`: a String as is, an NSNumber as its
+    /// `stringValue`, anything else `nil`.
+    static func stringValue(_ value: Any?) -> String? {
+        switch value {
+        case let string as String: return string
+        case let number as NSNumber: return number.stringValue
+        default: return nil
+        }
+    }
+
+    /// Non-finite components (CGRect.null / infinite) become 0: JSONSerialization cannot encode them.
+    static func frame(_ rect: CGRect) -> [String: Double] {
+        let finite = { (v: CGFloat) -> Double in v.isFinite ? Double(v) : 0 }
+        return ["x": finite(rect.origin.x), "y": finite(rect.origin.y), "width": finite(rect.size.width), "height": finite(rect.size.height)]
+    }
 }

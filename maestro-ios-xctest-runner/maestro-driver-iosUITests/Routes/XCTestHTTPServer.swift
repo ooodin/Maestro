@@ -41,6 +41,14 @@ struct XCTestHTTPServer {
         // Pomerado routes: strict, POST JSON under /pomerado/.
         await server.appendRoute("POST /pomerado/status", to: PomeradoStatusHandler())
         await server.appendRoute("POST /pomerado/hierarchy", to: await MainActor.run { PomeradoHierarchyHandler() })
+        await server.appendRoute("POST /pomerado/touch", to: await MainActor.run { PomeradoTouchHandler() })
+        await server.appendRoute("POST /pomerado/inputText", to: await MainActor.run { PomeradoInputTextHandler() })
+        await server.appendRoute("POST /pomerado/swipe", to: await MainActor.run { PomeradoSwipeHandler() })
+        await server.appendRoute("POST /pomerado/screenshot", to: await MainActor.run { PomeradoScreenshotHandler() })
+        await server.appendRoute("POST /pomerado/launchApp", to: await MainActor.run { PomeradoLaunchAppHandler() })
+        await server.appendRoute("POST /pomerado/clearField", to: await MainActor.run { PomeradoClearFieldHandler() })
+        await server.appendRoute("POST /pomerado/adjustElement", to: await MainActor.run { PomeradoAdjustHandler() })
+        await server.appendRoute("POST /pomerado/pinch", to: await MainActor.run { PomeradoPinchHandler() })
 
         try await server.run()
     }
