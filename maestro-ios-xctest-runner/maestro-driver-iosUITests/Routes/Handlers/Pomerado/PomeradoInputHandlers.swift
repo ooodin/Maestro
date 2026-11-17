@@ -61,8 +61,8 @@ struct PomeradoSwipeHandler: HTTPHandler {
     }
 }
 
-/// `POST /pomerado/screenshot {appId}` -> `{png: base64}`. No event is sent, so only the
-/// foreground half of the guard applies: a screenshot of an alert over the app is allowed.
+/// `POST /pomerado/screenshot {appId}` -> `{png: base64}` of the whole screen. No event is sent, so
+/// there is no guard: a screenshot while a SpringBoard alert is shown (SpringBoard foreground) is allowed.
 @MainActor
 struct PomeradoScreenshotHandler: HTTPHandler {
     private struct Request: PomeradoAppRequest {
@@ -70,8 +70,7 @@ struct PomeradoScreenshotHandler: HTTPHandler {
     }
 
     func handleRequest(_ request: HTTPRequest) async throws -> HTTPResponse {
-        await PomeradoInput.run(request, as: Request.self, expecting: "{appId}") { body, _ in
-            try PomeradoGuard.checkForeground(appId: body.appId)
+        await PomeradoInput.run(request, as: Request.self, expecting: "{appId}") { _, _ in
             let png = XCUIScreen.main.screenshot().pngRepresentation
             guard !png.isEmpty else {
                 throw PomeradoFailure("screenshot_unavailable", status: .internalServerError)

@@ -142,19 +142,6 @@ enum PomeradoGuard {
             throw Failure(reason: "foreground")
         }
     }
-
-    /// The foreground half of the guard only, for routes that do not touch the screen (screenshot).
-    static func checkForeground(appId: String) throws {
-        let foreground: String
-        do {
-            foreground = try PomeradoSystem.foregroundBundleId()
-        } catch {
-            throw PomeradoFailure.snapshotUnavailable(error)
-        }
-        guard foreground == appId else {
-            throw Failure(reason: "foreground")
-        }
-    }
 }
 
 /// A Pomerado route error with its HTTP status and short code.
