@@ -104,6 +104,8 @@
 		BBBB00032DF24A0000000003 /* ElementType.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBBB00132DF24A0000000013 /* ElementType.swift */; };
 		BBBB00042DF24A0000000004 /* PermissionValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBBB00142DF24A0000000014 /* PermissionValue.swift */; };
 		BBBB00052DF24A0000000005 /* PermissionButtonFinder.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBBB00152DF24A0000000015 /* PermissionButtonFinder.swift */; };
+		B0ADE00A0000000000000002 /* PickerValueMatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0ADE00A0000000000000001 /* PickerValueMatch.swift */; };
+		B0ADE00B0000000000000002 /* PickerValueMatchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0ADE00B0000000000000001 /* PickerValueMatchTests.swift */; };
 		BBBB00062DF24A0000000006 /* MaestroDriverLib.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBBB00162DF24A0000000016 /* MaestroDriverLib.swift */; };
 		BBBB00072DF24A0000000007 /* MaestroDriverLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBBB00202DF24A0000000020 /* MaestroDriverLib.framework */; };
 		BBBB00082DF24A0000000008 /* MaestroDriverLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBBB00202DF24A0000000020 /* MaestroDriverLib.framework */; };
@@ -366,6 +368,8 @@
 		BBBB00132DF24A0000000013 /* ElementType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElementType.swift; sourceTree = "<group>"; };
 		BBBB00142DF24A0000000014 /* PermissionValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionValue.swift; sourceTree = "<group>"; };
 		BBBB00152DF24A0000000015 /* PermissionButtonFinder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionButtonFinder.swift; sourceTree = "<group>"; };
+		B0ADE00A0000000000000001 /* PickerValueMatch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerValueMatch.swift; sourceTree = "<group>"; };
+		B0ADE00B0000000000000001 /* PickerValueMatchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerValueMatchTests.swift; sourceTree = "<group>"; };
 		BBBB00162DF24A0000000016 /* MaestroDriverLib.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaestroDriverLib.swift; sourceTree = "<group>"; };
 		BBBB00172DF24A0000000017 /* PermissionButtonFinderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionButtonFinderTests.swift; sourceTree = "<group>"; };
 		BBBB00182DF24A0000000018 /* AXElementTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AXElementTests.swift; sourceTree = "<group>"; };
@@ -812,6 +816,7 @@
 			isa = PBXGroup;
 			children = (
 				BBBB00152DF24A0000000015 /* PermissionButtonFinder.swift */,
+				B0ADE00A0000000000000001 /* PickerValueMatch.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -820,6 +825,7 @@
 			isa = PBXGroup;
 			children = (
 				BBBB00172DF24A0000000017 /* PermissionButtonFinderTests.swift */,
+				B0ADE00B0000000000000001 /* PickerValueMatchTests.swift */,
 				BBBB00182DF24A0000000018 /* AXElementTests.swift */,
 				BBBB00192DF24A0000000019 /* AXFrameTests.swift */,
 			);
@@ -1129,6 +1135,7 @@
 				BBBB00032DF24A0000000003 /* ElementType.swift in Sources */,
 				BBBB00042DF24A0000000004 /* PermissionValue.swift in Sources */,
 				BBBB00052DF24A0000000005 /* PermissionButtonFinder.swift in Sources */,
+				B0ADE00A0000000000000002 /* PickerValueMatch.swift in Sources */,
 				BBBB00062DF24A0000000006 /* MaestroDriverLib.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1138,6 +1145,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BBBB000A2DF24A000000000A /* PermissionButtonFinderTests.swift in Sources */,
+				B0ADE00B0000000000000002 /* PickerValueMatchTests.swift in Sources */,
 				BBBB000B2DF24A000000000B /* AXElementTests.swift in Sources */,
 				BBBB000C2DF24A000000000C /* AXFrameTests.swift in Sources */,
 			);

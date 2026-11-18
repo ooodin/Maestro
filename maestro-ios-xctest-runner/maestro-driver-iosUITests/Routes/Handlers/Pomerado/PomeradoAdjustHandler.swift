@@ -15,6 +15,7 @@
 
 import FlyingFox
 import Foundation
+import MaestroDriverLib
 import XCTest
 
 /// `POST /pomerado/adjustElement {appId, elementType:"pickerWheel"|"slider", frame, pickerValue?,
@@ -23,7 +24,8 @@ import XCTest
 /// Resolves exactly one element of that type whose frame matches (±0.5 pt), then:
 /// - `pickerOrder`: a tap 0.1 x height below (next) or above (previous) the wheel's centre, as
 ///   `selectPickerWheelValue` does with offset 0.1;
-/// - `pickerValue`: guarded `pickerOrder` steps, "next" until the value is reached, a value repeats
+/// - `pickerValue`: guarded `pickerOrder` steps, "next" until the value is reached (`PickerValueMatch`:
+///   exact, or a leading token, so "14" reaches "14 o’clock"; the first matching value stops), a value repeats
 ///   (the wheel looped or hit its end) or `maxSteps`, then the same with "previous". Not
 ///   `adjust(toPickerWheelValue:)`: for a value the wheel does not offer it records an XCTest issue,
 ///   which stops the runner. Not reached: 409 `value_not_found` (with `partial` once a step was sent);
@@ -67,20 +69,25 @@ struct PomeradoAdjustHandler: HTTPHandler {
     private static let maxSteps = 60
 
     /// Steps the wheel towards `target`, one guarded tap at a time, reading the value (throwing
-    /// snapshot) after each step. Throws 409 `value_not_found` when neither direction reaches it.
+    /// snapshot) after each step. The walk stops at the first value `PickerValueMatch` accepts.
+    /// Throws 409 `value_not_found` when neither direction reaches it.
     private static func step(_ element: XCUIElement, frame: CGRect, toValue target: String, events: PomeradoEvents) async throws {
         var current = PomeradoResponse.stringValue(try value(of: element))
         for next in [true, false] {
             var seen: Set<String?> = [current]
             for _ in 0..<maxSteps {
-                if current == target { return }
+                if reached(current, target) { return }
                 current = try await step(element, frame: frame, next: next, events: events)
                 if seen.contains(current) { break }
                 seen.insert(current)
             }
-            if current == target { return }
+            if reached(current, target) { return }
         }
         throw PomeradoFailure("value_not_found", status: .conflict)
+    }
+
+    private static func reached(_ value: String?, _ target: String) -> Bool {
+        PickerValueMatch.match(value, target) != nil
     }
 
     /// One `pickerOrder` step: a tap 0.1 x height from the centre, then the settled value. The wheel
